@@ -1,1 +1,1 @@
-settings, validation scores, and notes
+timestamp,name,config,features,cv,rmse,log_loss,brier,backtest_points,always_underdog_points,notes

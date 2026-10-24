@@ -1,7 +1,180 @@
-Where data paths, model settings, seed lies
-data_path: ...
-test_year: ...
-target: ...
-features:
-AWSTemplateFormatVersion: "2010-09-09"
-random_seed: 
+# Data paths, years, features, model settings, seed.
+# Paths are relative to the repo root. Column contracts: data/README.md
+# Feature list matches "Election prediction model" doc, final feature list (v1).
+
+random_seed: 42
+
+years:
+  train: [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024]
+  predict: 2026            # must NOT also appear in train
+
+data:
+  house_results: data/raw/mit_house_1976_2024.csv     # MIT Election Lab, candidate-level
+  senate_results: data/raw/mit_senate_1976_2024.csv
+  national: data/raw/national.csv                      # generic ballot + approval per year
+  lean: data/raw/lean.csv                              # partisan lean per race, that year's lines
+  candidates: data/raw/candidates.csv                  # incumbency, scandal, cfscore
+  fec_dir: data/raw/fec/                               # FEC per cycle (incl. unitemized receipts)
+  polls: data/raw/polls.csv
+  ratings: data/raw/ratings.csv                        # expert ratings -> backtest stand-in market
+  race_list_2026: data/raw/race_list_2026.csv          # all 470 races + flags
+  kalshi_snapshot: data/raw/kalshi_2026-11-01.csv
+  processed: data/processed/training_table.csv
+
+target: margin            # (D - R) / (D + R)
+
+# ---------------------------------------------------------------- stage 1
+baseline:
+  features:
+    - lean                  # district lean vs nation, D terms (D+8 = 0.08)
+    - generic_ballot        # national D margin as of the cutoff
+    - approval_signed       # president's net approval, in D terms
+    - midterm_flag          # 1 in midterm years
+    - midterm_pres_penalty  # -1 midterm under D president, +1 under R, 0 presidential years
+    - incumbency_x_lean     # signed incumbency x lean
+
+# ---------------------------------------------------------------- stage 2
+# Column names in the processed table. Change suffixes: _chg_<N>y = current minus
+# N years earlier (see feature_horizons). Candidate features are D minus R.
+residual_model:
+  features:
+    # Regional economy
+    - unemployment
+    - unemployment_chg_1y
+    - unemployment_chg_2y
+    - unemployment_chg_5y
+    - unemployment_chg_10y
+    - unemployment_chg_20y
+    - home_value_chg_1y           # FHFA county HPI (Zillow ZHVI as a check)
+    - home_value_chg_2y
+    - home_value_chg_5y
+    - home_value_chg_10y
+    - home_value_chg_20y
+    - rent_chg_5y                 # ACS median gross rent (+ 2000 census)
+    - rent_chg_10y
+    - median_income               # ACS, real dollars
+    - median_income_chg_5y
+    - median_income_chg_10y
+    - poverty_rate
+    - poverty_rate_chg_5y
+    - poverty_rate_chg_10y
+    # Industry mix (ACS C24050, share of employed; reference group dropped:
+    # retail, wholesale, transportation, utilities, arts/hospitality, other services)
+    - ind_manufacturing
+    - ind_manufacturing_chg_10y
+    - ind_ag_mining
+    - ind_ag_mining_chg_10y
+    - ind_construction
+    - ind_construction_chg_10y
+    - ind_edu_health
+    - ind_edu_health_chg_10y
+    - ind_prof_finance
+    - ind_prof_finance_chg_10y
+    - ind_public_admin
+    - ind_public_admin_chg_10y
+    # Geography
+    - log_density
+    - log_density_chg_10y
+    # Background (ethnicity reference group dropped: white)
+    - ba_plus
+    - ba_plus_chg_10y
+    - less_than_hs
+    - less_than_hs_chg_10y
+    - median_age
+    - median_age_chg_10y
+    - religiosity                 # county % religious x state attendance rate
+    - religiosity_chg_10y
+    - religiosity_chg_20y
+    - pct_black
+    - pct_black_chg_10y
+    - pct_hispanic
+    - pct_hispanic_chg_10y
+    - pct_asian
+    - pct_asian_chg_10y
+    - pct_other
+    - pct_other_chg_10y
+    # Race structure (current only)
+    - chamber_senate
+    - incumbency_signed           # +1 D incumbent, -1 R incumbent, 0 open
+    # Candidate, D minus R (current only)
+    - scandal_diff
+    - donor_mix_diff              # (small-donor share - PAC share), D minus R
+    - cash_share                  # D share of cash in reserves
+    - cfscore_diff
+    - moderation_diff             # party-relative lean, sign fixed: + = more moderate
+    # Issue composite (current only)
+    - issue_gap_diff              # sum importance x |candidate - voter|^p, R gap minus D gap
+    # Polls (appended last)
+    - poll_gap                    # weighted poll margin - out-of-fold baseline; Null if unpolled
+    - has_polls
+    - poll_count_30d
+    - days_since_poll             # Null if unpolled
+
+  # Optional, from the doc (add one at a time; keep only if holdout improves):
+  #   rent_chg_1y, rent_chg_2y      Zillow ZORI; Null before ~2016
+  #   ba_plus_chg_5y, pct_hispanic_chg_5y
+  # Deferred in the doc: six instrument weights, overall scale of change.
+
+  lightgbm:
+    num_leaves: 15
+    learning_rate: 0.03
+    min_data_in_leaf: 50
+    feature_fraction: 0.8         # each tree sees a random 80% of features
+    bagging_fraction: 0.8
+    bagging_freq: 1
+    n_estimators: 2000
+    early_stopping_rounds: 100
+
+# Which change horizons each base measure gets (years). Used when building the
+# processed table with features.add_horizon_changes. Doc time rules:
+#   ACS items: 5- and 10-year only; 20-year only for unemployment, home value,
+#   religiosity; candidate, money and issue features have no horizons; anchor ACS
+#   to the latest vintage released before each election; one source per series.
+feature_horizons:
+  unemployment: [1, 2, 5, 10, 20]
+  home_value: [1, 2, 5, 10, 20]
+  rent: [5, 10]
+  median_income: [5, 10]
+  poverty_rate: [5, 10]
+  ind_manufacturing: [10]
+  ind_ag_mining: [10]
+  ind_construction: [10]
+  ind_edu_health: [10]
+  ind_prof_finance: [10]
+  ind_public_admin: [10]
+  log_density: [10]
+  ba_plus: [10]
+  less_than_hs: [10]
+  median_age: [10]
+  religiosity: [10, 20]
+  pct_black: [10]
+  pct_hispanic: [10]
+  pct_asian: [10]
+  pct_other: [10]
+
+issue_composite:
+  issues: [economy_inflation, taxes, trade_tariffs, health_care, immigration,
+           crime, guns, abortion, climate]
+  p: 2                    # exponent on |candidate - voter|; test other values
+  weights: raw            # raw | learned  (to be tested)
+
+probability:
+  dist: t                 # normal | t (t: fewer upsets near 50/50, more in lopsided races)
+  t_df: 5
+
+polls:
+  half_life_days: 12
+  window_days: 60               # polls from the 60 days before the cutoff
+  cutoff_days_before_election: 5
+  internal_discount: 0.5        # internal / sponsor-released polls
+  # pollster_rating weights come from the polls file ('pollster_rating' column)
+
+kalshi:
+  house_series: KXHOUSERACE
+  senate_series: null     # TODO: read from a Senate race URL on kalshi.com
+  method: two_party       # two_party | all_candidates  (confirm with organizers)
+  min_volume: 1000
+
+submission:
+  path: outputs/submission.csv
+  expected_count: 470
