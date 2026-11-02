@@ -3,7 +3,7 @@ Raw-data loading, key standardization, and validation.
 
 Every table that describes a race uses the same keys:
 
-    year      int   2010, 2012, ..., 2026
+    year      int   1998, 2000, ..., 2026
     chamber   str   "House" or "Senate"
     state     str   two-letter postal code ("NY")
     district  int   House district number; 0 for at-large seats and all Senate races
@@ -40,7 +40,7 @@ STATE_CODES = {
 }
 VALID_STATES = set(STATE_CODES.values())
 
-AT_LARGE_STATES = {"AK", "DE", "ND", "SD", "VT", "WY"}   # one House seat, 2010-2026
+AT_LARGE_STATES = {"AK", "DE", "ND", "SD", "VT", "WY"}   # one House seat, 1998-2026
 AT_LARGE_BEFORE_2022 = {"MT"}                              # MT gained a 2nd seat in 2022
 
 TOP_TWO_STATES = {"CA", "WA"}       # general election can be same-party
@@ -156,7 +156,8 @@ SCHEMAS: dict[str, Schema] = {
     "lean": Schema(
         required=KEYS + ["lean"],
         keys=KEYS,
-        ranges={"lean": (-0.8, 0.8)},
+        # margin scale (same as the target): safe urban seats reach about +/-0.9
+        ranges={"lean": (-1.0, 1.0)},
         no_missing=["lean"],
     ),
     "candidates": Schema(
@@ -347,3 +348,52 @@ def load_fec_weball(path, year: int) -> pd.DataFrame:
     })
     out = out[out["chamber"].notna()]
     return standardize_keys(out)
+
+
+# ------------------------------------------------------------------ baseline table
+def build_baseline_table(results: pd.DataFrame, lean: pd.DataFrame,
+                         min_two_party_share: float = 0.8, verbose: bool = True,
+                         drop_specials: bool = True) -> pd.DataFrame:
+    """
+    One row per contested past race: race keys, race_id, margin (the target) and lean.
+
+    results: data/raw/results_538_1998_2024.csv (dem_votes, rep_votes, uncontested, same_party)
+    lean:    data/raw/lean.csv (validated against the "lean" schema)
+
+    Drops uncontested races, races without both a D and an R (same_party), races
+    where D + R got under min_two_party_share of all votes (an independent or third
+    candidate was a real contender, e.g. Angus King in Maine), and races with no lean
+    value. With drop_specials (the default) special elections are dropped too: they
+    run off-calendar with unusual turnout. (Winners of specials still count as
+    incumbents in later regular races; that lives in the incumbency file.)
+    Prints how many were dropped per year so a bad join is obvious.
+    """
+    res = standardize_keys(results)
+    ln = validate(standardize_keys(lean), "lean", name="lean")
+    df = res.merge(ln[KEYS + ["lean"]], on=KEYS, how="left", validate="one_to_one")
+
+    flags = pd.DataFrame({
+        "uncontested": df.get("uncontested", False).astype(bool),
+        "same_party": df.get("same_party", False).astype(bool),
+        "third_party": (pd.to_numeric(df["dem_votes"], errors="coerce").fillna(0)
+                        + pd.to_numeric(df["rep_votes"], errors="coerce").fillna(0))
+                       < min_two_party_share * pd.to_numeric(df["total_votes"], errors="coerce"),
+        "no_lean": df["lean"].isna(),
+        "special": df["special"].astype(bool) & drop_specials,
+        # no usable vote count (e.g. 2012 KY-04 special, reported as 0-0)
+        "no_votes": ~((pd.to_numeric(df["dem_votes"], errors="coerce")
+                       + pd.to_numeric(df["rep_votes"], errors="coerce")) > 0),
+    })
+    drop = flags.any(axis=1)
+    if verbose:
+        report = flags.assign(year=df["year"]).groupby("year").sum()
+        report["kept"] = (~drop).groupby(df["year"]).sum()
+        print("baseline table, rows dropped per year:")
+        print(report.to_string())
+
+    out = df[~drop].copy()
+    d = pd.to_numeric(out["dem_votes"], errors="coerce")
+    r = pd.to_numeric(out["rep_votes"], errors="coerce")
+    out["margin"] = (d - r) / (d + r)
+    out["race_id"] = race_id(out)
+    return out.reset_index(drop=True)

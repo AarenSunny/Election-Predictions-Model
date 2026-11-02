@@ -218,3 +218,26 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# large raw downloads from scripts/fetch_public_data.py (tidy CSVs in data/raw/ are kept)
+data/raw/fec/
+data/raw/acs/
+data/raw/bls/
+data/raw/zillow/
+data/raw/fhfa/
+data/raw/census/
+data/raw/dime/
+data/raw/religion/
+data/raw/geocorr/
+
+# Cook Political Report PVI workbook (their data, not ours to publish)
+data/raw/cook/
+
+# macOS folder metadata
+.DS_Store
+# generated outputs (rebuilt by `python -m election_prediction.train`)
+data/processed/*.csv
+# superseded 2010-only builds (replaced by the *_1998_* files)
+data/raw/results_538_2010_2024.csv
+data/raw/incumbency_2010_2026.csv
+data/raw/polls_538_2010_2022.csv

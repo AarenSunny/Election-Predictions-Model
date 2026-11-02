@@ -12,19 +12,25 @@ File paths are set in `configs/baseline.yaml`.
 | `state` is the two-letter code (full names are converted automatically) | `NY` |
 | `district` is an integer; **0 for at-large seats and every Senate race** | `AL` → 0 |
 | `special` is True only for special elections | 2026 OH/FL Senate |
-| Margins, leans, approval, generic ballot are **fractions in D terms** | D+8 → `0.08`, R+5 → `-0.05` |
+| Margins, leans, approval, generic ballot are **fractions in D terms**, on the **margin** scale | margin D+8 → `0.08`; Cook PVI D+8 (a vote-share measure) → lean `0.16` |
 | Party columns use `D`, `R`, `O` | |
 | District lines: each year uses **that year's** lines | 2026 rows on 2026 maps |
 
 `data.validate()` checks all of this and lists every problem at once.
+
+## What's already here
+
+See `data/raw/SOURCES.md`: which files exist, where they came from, what they cover, and
+how to download the rest (`scripts/fetch_public_data.py`).
 
 ## Files and columns
 
 | File | Source | Required columns |
 | --- | --- | --- |
 | `mit_house_1976_2024.csv`, `mit_senate_1976_2024.csv` | [MIT Election Data + Science Lab](https://electionlab.mit.edu/data) | as downloaded (loaded by `data.load_mit_results`) |
-| `national.csv` | 538 archive, FiftyPlusOne | `year, generic_ballot, net_approval, pres_party` (one row per year, values as of the poll cutoff) |
-| `lean.csv` | Cook PVI, Dave's Redistricting App, The Downballot | keys + `lean` |
+| `national/*.xlsx` | team spreadsheets (generic ballot, midterm flag, president flag, approval) | read by `election_prediction.inputs` (see `docs/BASELINE_CHANGES.md`) |
+| `incumbency/congressional_incumbency_1998_2026.xlsx` | team spreadsheet | House + Senate sheets, D/R incumbent flags, G/S election type |
+| `lean.csv` | `scripts/convert_cook_pvi.py` (Cook House PVI sheets + Cook Senate state PVI in `data/raw/cook/`) | keys + `lean`, margin scale (Cook PVI × 2 / 100) |
 | `candidates.csv` | Ballotpedia, DIME (CFscores), hand-coded | keys + `party, name, incumbent, scandal, cfscore, fec_candidate_id` |
 | `fec/` | [FEC bulk data](https://www.fec.gov/data/browse-data/?tab=bulk-data) | "All candidates" summary (`weball{yy}.txt`, loaded by `data.load_fec_weball`) **plus unitemized individual receipts (< $200) per candidate** for the small-donor share; the summary file doesn't separate small donors |
 | `polls.csv` | FiftyPlusOne (2026), 538 archive (past) | keys + `end_date, pollster, sample_size, dem_pct, rep_pct` (percent, 0–100); optional `pollster_rating` (weight, e.g. 0–1) and `internal` (True for internal / sponsor-released) |

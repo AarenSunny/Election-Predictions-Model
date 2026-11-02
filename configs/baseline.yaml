@@ -3,16 +3,27 @@
 # Feature list matches "Election prediction model" doc, final feature list (v1).
 
 random_seed: 42
+run_name: baseline v1 (lean + generic ballot + incumbency + midterm, 2010-2024)   # label written to reports/experiments.csv
 
 years:
+  # Restrict baseline training and evaluation to elections from 2010 onward.
   train: [2010, 2012, 2014, 2016, 2018, 2020, 2022, 2024]
   predict: 2026            # must NOT also appear in train
 
 data:
+  results: data/raw/results_538_1998_2024.csv          # House + Senate results (built from 538)
+  lean: data/raw/lean.csv                              # convert_cook_pvi.py (Cook House + Senate PVI); MARGIN scale
+  # baseline inputs (team spreadsheets; loaded + cleaned by election_prediction/inputs.py)
+  generic_ballot: data/raw/national/Generic_Ballot_Data.xlsx
+  midterm_flag: data/raw/national/MidtermFlag.xlsx         # 1 = midterm year, 0 = presidential year
+  president_flag: data/raw/national/President_Flag.xlsx    # +1 D president, -1 R
+  approval: data/raw/national/Presidential_Approval_Ratings.xlsx   # 2 sheets: broad, reliable
+  incumbency: data/raw/incumbency/congressional_incumbency_1998_2026.xlsx
+  cook_house: data/raw/cook/Cook_PVI_1997-2026.xlsx       # inputs to scripts/convert_cook_pvi.py
+  cook_senate: data/raw/cook/COOK_SENATE_PVI.xlsx
+  baseline_residuals: data/processed/baseline_residuals.csv
   house_results: data/raw/mit_house_1976_2024.csv     # MIT Election Lab, candidate-level
   senate_results: data/raw/mit_senate_1976_2024.csv
-  national: data/raw/national.csv                      # generic ballot + approval per year
-  lean: data/raw/lean.csv                              # partisan lean per race, that year's lines
   candidates: data/raw/candidates.csv                  # incumbency, scandal, cfscore
   fec_dir: data/raw/fec/                               # FEC per cycle (incl. unitemized receipts)
   polls: data/raw/polls.csv
@@ -25,13 +36,19 @@ target: margin            # (D - R) / (D + R)
 
 # ---------------------------------------------------------------- stage 1
 baseline:
-  features:
-    - lean                  # district lean vs nation, D terms (D+8 = 0.08)
-    - generic_ballot        # national D margin as of the cutoff
-    - approval_signed       # president's net approval, in D terms
-    - midterm_flag          # 1 in midterm years
-    - midterm_pres_penalty  # -1 midterm under D president, +1 under R, 0 presidential years
-    - incumbency_x_lean     # signed incumbency x lean
+  features: [lean, generic_ballot, incumbency_signed, midterm_x_pres]
+  # lean                  # district lean vs nation, D terms, MARGIN scale (Cook D+8 = 0.16)
+  # Candidates, all built in features.add_baseline_inputs. Add one at a time and keep
+  # each only if leave-one-year-out RMSE drops: `python -m election_prediction.compare`
+  #   - generic_ballot           # (D - R) / (D + R) of the generic-ballot poll, -1..1
+  #   - incumbency_signed        # +1 D incumbent running, -1 R, 0 neither/both
+  #                              #   (move OUT of residual_model.features if you add it here)
+  #   - approval_x_pres          # (approval - 50) x president flag
+  #   - midterm_x_pres           # midterm flag x president flag
+  #   - approval_x_pres_midterm  # approval_x_pres in midterms, 0 otherwise (optional test)
+  approval_source: reliable_30d   # sheet (reliable | broad) _ window (latest | 30d | 90d)
+  drop_specials: true             # train on regular races only (special-election winners still
+                                  # count as incumbents later, via the incumbency file)
 
 # ---------------------------------------------------------------- stage 2
 # Column names in the processed table. Change suffixes: _chg_<N>y = current minus
@@ -94,8 +111,7 @@ residual_model:
     - pct_other
     - pct_other_chg_10y
     # Race structure (current only)
-    - chamber_senate
-    - incumbency_signed           # +1 D incumbent, -1 R incumbent, 0 open
+    - chamber_senate       
     # Candidate, D minus R (current only)
     - scandal_diff
     - donor_mix_diff              # (small-donor share - PAC share), D minus R

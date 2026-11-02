@@ -1,0 +1,518 @@
+pollster,pollster_rating_id,grade_538,predictive_plus_minus,banned_by_538,pollster_rating
+The New York Times/Siena College,448,A+,-1.192859796,False,1.0
+Selzer & Co.,304,A+,-1.175910681,False,1.0
+Research & Polling Inc.,280,A+,-0.965391705,False,1.0
+SurveyUSA,325,A+,-0.917319754,False,1.0
+Marquette University Law School,195,A/B,-0.908214578,False,0.85
+Siena College,305,A,-0.83779857,False,0.95
+AtlasIntel,546,A,-0.762375056,False,0.95
+ABC News/The Washington Post,3,A,-0.723926952,False,0.95
+Cygnal,67,A,-0.722834682,False,0.95
+Beacon Research/Shaw & Co. Research,103,A,-0.721024201,False,0.95
+Marist College,183,A,-0.702045462,False,0.95
+Monmouth University,215,A,-0.633123772,False,0.95
+Landmark Communications,166,A,-0.615347146,False,0.95
+MassINC Polling Group,198,A/B,-0.597310588,False,0.85
+The Washington Post/George Mason University Schar School of Policy and Government,754,A/B,-0.591891171,False,0.85
+University of North Florida Public Opinion Research Lab,360,A/B,-0.586225886,False,0.85
+TIPP Insights,144,A-,-0.579493232,False,0.9
+Alaska Survey Research,155,A/B,-0.548533996,False,0.85
+Emerson College,88,A-,-0.52566113,False,0.9
+University of Massachusetts Lowell Center for Public Opinion,355,A-,-0.508288334,False,0.9
+Public Policy Institute of California,262,A/B,-0.503459758,False,0.85
+Stockton University,317,A/B,-0.431896251,False,0.85
+Field Research Corp. (Field Poll),94,A/B,-0.431256478,False,0.85
+CBS News/The New York Times,36,A-,-0.428628547,False,0.9
+Data Orbital,73,A/B,-0.418860651,False,0.85
+Strategic Vision LLC,320,F,-0.390758738,True,0.0
+Suffolk University,323,A-,-0.388964055,False,0.9
+Los Angeles Times,172,A/B,-0.384171087,False,0.85
+Mason-Dixon Polling & Strategy,197,A-,-0.381610486,False,0.9
+Christopher Newport University Wason Center for Civic Leadership,50,A/B,-0.374020697,False,0.85
+Public Policy Polling,263,A-,-0.370431029,False,0.9
+Quinnipiac University,267,A-,-0.365289733,False,0.9
+Grove Insight,129,A/B,-0.35823339,False,0.85
+Greenberg Quinlan Rosner/American Viewpoint,127,A/B,-0.350762395,False,0.85
+RKM Research and Communications Inc.,272,A/B,-0.324764229,False,0.85
+National Research,225,A/B,-0.319513757,False,0.85
+Muhlenberg College,219,A-,-0.315563106,False,0.9
+Dittman Research,79,A/B,-0.308300104,False,0.85
+Public Opinion Strategies,260,B+,-0.293690898,False,0.8
+Elway Research,87,A/B,-0.267391177,False,0.85
+RRH Elections,274,A/B,-0.260853524,False,0.85
+University of Connecticut,347,A/B,-0.260688972,False,0.85
+The Winston Group,385,A/B,-0.247264951,False,0.85
+YouGov,391,B+,-0.227409613,False,0.8
+Opinion Dynamics,104,A/B,-0.225263921,False,0.85
+Susquehanna Polling & Research Inc.,326,B+,-0.217849982,False,0.8
+Elon University,86,A/B,-0.200235778,False,0.85
+"Fabrizio, Lee & Associates",90,A/B,-0.190830704,False,0.85
+Angus Reid Global,13,A/B,-0.190604502,False,0.85
+Florida Atlantic University,97,A/B,-0.187643107,False,0.85
+Tarrance Group,333,B+,-0.182223703,False,0.8
+Fairleigh Dickinson University,92,A/B,-0.181642284,False,0.85
+Pharos Research Group,254,F,-0.179682777,True,0.0
+Echelon Insights,407,A/B,-0.162527657,False,0.85
+National Journal,224,A/B,-0.146885507,False,0.85
+Temple University Institute for Survey Research,336,A/B,-0.131823094,False,0.85
+Hart Research Associates/Public Opinion Strategies,221,B+,-0.131553023,False,0.8
+Gallup,112,B+,-0.131207366,False,0.8
+Abt Associates,7,A/B,-0.130492568,False,0.85
+Landmark Communications/Rosetta Stone Communications,751,A/B,-0.122408825,False,0.85
+Michigan State University Institute for Public Policy and Social Research,463,A/B,-0.111356429,False,0.85
+GQR,126,B+,-0.105028893,False,0.8
+Garin-Hart-Yang Research Group,113,B+,-0.103705015,False,0.8
+Vox Populi Polling,372,A/B,-0.093600388,False,0.85
+Lake Research Partners,165,A/B,-0.092570675,False,0.85
+KRC Research,160,A/B,-0.077063047,False,0.85
+St. Pete Polls,314,B+,-0.076865839,False,0.8
+Princeton Survey Research Associates International,258,A/B,-0.076532548,False,0.85
+Western New England University Polling Institute,380,A/B,-0.070035733,False,0.85
+KAConsulting,757,A/B,-0.066373019,False,0.85
+Fleming & Associates,96,A/B,-0.054173362,False,0.85
+University of Cincinnati (Ohio Poll),346,A/B,-0.04386808,False,0.85
+EPIC-MRA,84,B+,-0.043523259,False,0.8
+co/efficient,514,B+,-0.041071001,False,0.8
+Lake Research Partners/The Tarrance Group,114,A/B,-0.04028072,False,0.85
+University of Arkansas Department of Political Science,345,A/B,-0.028654799,False,0.85
+New England College Polling Center,228,A/B,-0.024541685,False,0.85
+SEA Polling & Strategic Design,302,A/B,-0.023039907,False,0.85
+GfK Group,115,A/B,-0.019207015,False,0.85
+Public Religion Research Institute,428,A/B,-0.014133251,False,0.85
+Public Opinion Strategies/Hamilton Campaigns (Texas Credit Union League),261,A/B,-0.010890251,False,0.85
+North Star Opinion Research,233,B/C,0.004880868,False,0.65
+Clemson University,54,B/C,0.010205791,False,0.65
+Clarity Campaign Labs,52,B/C,0.013021603,False,0.65
+Magellan Strategies,179,B/C,0.017012003,False,0.65
+Indiana University Public Opinion Laboratory,149,B/C,0.018770825,False,0.65
+Harris Insights & Analytics,133,B,0.021322523,False,0.75
+Wirthlin Worldwide,387,B/C,0.022287378,False,0.65
+Knowledge Networks,164,B/C,0.028772343,False,0.65
+Øptimus Analytics,245,B/C,0.030043773,False,0.65
+Blum & Weprin Associates,32,B/C,0.036868609,False,0.65
+Belden Russonello,28,B/C,0.040397278,False,0.65
+Louis Harris & Associates,173,B/C,0.040769295,False,0.65
+Harper Polling,132,B/C,0.047628211,False,0.65
+Pew Research Center,253,B/C,0.058977195,False,0.65
+Rasmussen Reports,277,B,0.059204014,False,0.75
+Civiqs,471,B,0.05937364,False,0.75
+University of Florida Bob Graham Center for Public Service,349,B/C,0.062120254,False,0.65
+Gordon S. Black Corp.,123,B/C,0.067351113,False,0.65
+Harstad Strategic Research,134,B/C,0.073136665,False,0.65
+Trafalgar Group,338,B,0.076445307,False,0.75
+Ohio State University,236,B/C,0.081455814,False,0.65
+Wick,284,B/C,0.093392651,False,0.65
+East Carolina University Center for Survey Research,523,B/C,0.09494901,False,0.65
+Data for Progress,522,B,0.104290095,False,0.75
+Polling Company/Global Strategy Group,255,B/C,0.115338936,False,0.65
+Gravis Marketing/Kaplan Strategies,124,B,0.117842861,False,0.75
+University of Georgia School of Public and International Affairs,350,B/C,0.118119605,False,0.65
+GQR Research/Public Opinion Strategies,222,B/C,0.123136855,False,0.65
+Spry Strategies,508,B/C,0.124860859,False,0.65
+RT Strategies,275,B/C,0.125680171,False,0.65
+Harvard University,135,B/C,0.12684336,False,0.65
+Victory Research,437,B/C,0.151831222,False,0.65
+Glengariff Group,117,B/C,0.159387981,False,0.65
+Starboard Communications,316,B/C,0.163752349,False,0.65
+GBAO,109,B/C,0.167461164,False,0.65
+Ward Research,375,B/C,0.181181686,False,0.65
+Saint Anselm College Survey Center,494,B/C,0.181310729,False,0.65
+Ciruli Associates,51,B/C,0.182520631,False,0.65
+Strategic National,318,B/C,0.189349058,False,0.65
+Mellman Group,205,B/C,0.215867127,False,0.65
+St. Norbert College Strategic Research Institute,313,B/C,0.22696424,False,0.65
+Winthrop University Center for Public Opinion & Policy Research,386,B/C,0.235947358,False,0.65
+Middle Tennessee State University,208,B/C,0.242834796,False,0.65
+OH Predictive Insights,235,B/C,0.245451064,False,0.65
+Strategies 360,321,B/C,0.245506097,False,0.65
+Remington Research Group,279,B,0.24619675,False,0.75
+Franklin & Marshall College,106,B/C,0.246528712,False,0.65
+Pan Atlantic Research,249,B/C,0.250084532,False,0.65
+CVOTER,40,B/C,0.25108863,False,0.65
+Yankelovich Partners Inc.,390,B/C,0.253942726,False,0.65
+ROI Rocket,554,B/C,0.254729728,False,0.65
+Cardinal Point Analytics (CardinalGPS),591,B/C,0.254729728,False,0.65
+Leger,572,B/C,0.257862051,False,0.65
+Dan Jones & Associates,70,B,0.259535478,False,0.75
+Market Shares Corp.,187,B/C,0.259547563,False,0.65
+Columbus Dispatch,57,B/C,0.267877119,False,0.65
+Edgewater Research/My People Vote,530,B/C,0.269618262,False,0.65
+University of South Alabama Polling Group,361,B/C,0.272759093,False,0.65
+University of California Berkeley Institute of Governmental Studies,457,B/C,0.27956134,False,0.65
+"University of Nevada, Las Vegas Lee Business School",609,B/C,0.287459459,False,0.65
+InsiderAdvantage,243,B,0.295761294,False,0.75
+Lucid,175,B,0.295776012,False,0.75
+OpinionWorks,244,B/C,0.298389604,False,0.65
+David Binder Research,578,B/C,0.308246451,False,0.65
+Market Research Institute Inc.,186,B/C,0.313428371,False,0.65
+RBI Strategies & Research,271,B/C,0.314031274,False,0.65
+DCCC Targeting and Analytics Department,68,B/C,0.318184143,False,0.65
+Big Village,37,B-,0.31943944,False,0.7
+Thomas Partners Strategies/Øptimus,758,B/C,0.326323291,False,0.65
+Ogden & Fry,425,B/C,0.326852746,False,0.65
+Louisville Courier-Journal,174,B/C,0.327093836,False,0.65
+Kiley & Company,162,B/C,0.332025212,False,0.65
+Riley Research Associates,290,B/C,0.337384532,False,0.65
+BSP Research/Shaw & Company Research,728,B/C,0.338069257,False,0.65
+Research 2000,281,F,0.33822716,True,0.0
+Research Co.,449,B-,0.339097475,False,0.7
+Praecones Analytica,257,B/C,0.346612663,False,0.65
+DFM Research,69,B/C,0.348612877,False,0.65
+Blueprint Polling,470,B/C,0.348843049,False,0.65
+BK Strategies,20,B/C,0.35503582,False,0.65
+RMG Research,555,B-,0.361247366,False,0.7
+Iowa State University Center for Survey Statistics and Methodology,153,B/C,0.366065886,False,0.65
+Morning Consult,218,B-,0.369574965,False,0.7
+McKeon & Associates,202,B/C,0.37093579,False,0.65
+Ipsos,154,B-,0.371738708,False,0.7
+Frederick Polls,108,B/C,0.374693656,False,0.65
+John Zogby Strategies,583,B/C,0.377594199,False,0.65
+El Nuevo Día/The Research Office,599,B/C,0.377594199,False,0.65
+Alabama State University,8,B/C,0.377979399,False,0.65
+Benenson Strategy Group,30,B/C,0.384415641,False,0.65
+University of Washington Center for Survey Research,364,B/C,0.38802908,False,0.65
+Latino Decisions,482,B/C,0.392831853,False,0.65
+Maine People's Resource Center,180,B/C,0.403326729,False,0.65
+Orion Strategies,246,B/C,0.410386673,False,0.65
+We Ask America,376,B-,0.410865877,False,0.7
+University of New Hampshire Survey Center,357,B-,0.411451219,False,0.7
+Tulchin Research,340,B/C,0.415015931,False,0.65
+Richard Day Research,287,B/C,0.416845252,False,0.65
+University of New Orleans Survey Research Center,358,B/C,0.418308004,False,0.65
+GS Strategy Group,478,B/C,0.418696754,False,0.65
+Keating Research,161,B/C,0.419877235,False,0.65
+IVR Polls,146,B/C,0.419959185,False,0.65
+Meeting Street Insights,204,B/C,0.429405518,False,0.65
+Keating Research/OnSight Public Affairs/Melanson,455,B/C,0.430561124,False,0.65
+MWR Strategies,617,B/C,0.432854605,False,0.65
+Potomac Incorporated,256,B/C,0.433199936,False,0.65
+OnPoint,240,B/C,0.434056739,False,0.65
+MSR Group,178,B/C,0.434236647,False,0.65
+University of Massachusetts Department of Political Science,354,B/C,0.436053825,False,0.65
+Impact Research,14,B/C,0.438403988,False,0.65
+WPA Intelligence,383,B/C,0.443221648,False,0.65
+Master Image,200,B/C,0.443678888,False,0.65
+Douglas Fulmer & Associates,82,B/C,0.443678888,False,0.65
+Basswood Research,24,B/C,0.453951261,False,0.65
+Northern Arizona University Social Research Laboratory,234,B/C,0.456588286,False,0.65
+CJ&N,63,B/C,0.466442551,False,0.65
+Missouri State University Center for Social Science and Public Policy Research,212,B/C,0.469153678,False,0.65
+Marshall Marketing,196,B/C,0.469374315,False,0.65
+APC Research,4,B/C,0.47103352,False,0.65
+The Castleton Polling Institute,45,B/C,0.472918351,False,0.65
+Ragnar Research Partners,517,B/C,0.484106363,False,0.65
+JMC Analytics,156,B/C,0.485745378,False,0.65
+Financial Dynamics,95,B/C,0.48861125,False,0.65
+CWS Research,697,B/C,0.489968279,False,0.65
+Fabrizio Lee & Associates/Impact Research,694,B/C,0.489968279,False,0.65
+Washington College,735,B/C,0.489968279,False,0.65
+MFour Mobile Research,177,B/C,0.495099186,False,0.65
+Google Consumer Surveys,122,B/C,0.497925895,False,0.65
+Zogby Analytics,395,B-,0.499237627,False,0.7
+American Viewpoint,10,B/C,0.500918778,False,0.65
+OnMessage Inc.,239,B/C,0.501681693,False,0.65
+Slingshot Strategies,451,B/C,0.502830818,False,0.65
+The Tyson Group,334,B/C,0.504721894,False,0.65
+Braun Research,33,B/C,0.506098293,False,0.65
+Dixie Strategies,81,B/C,0.507715454,False,0.65
+Wiese Research Associates,382,B/C,0.508455322,False,0.65
+Merrill Poll,206,B/C,0.508789796,False,0.65
+RAND (American Life Panel),270,B/C,0.511324317,False,0.65
+Park Street Strategies,534,B/C,0.511724617,False,0.65
+Data Targeting,406,B/C,0.511724617,False,0.65
+Rethink Priorities,672,F,0.511980623,True,0.0
+NewsNation,696,B/C,0.517380109,False,0.65
+Overtime Politics,247,F,0.517700291,True,0.0
+Southern Media & Opinion Research,310,B/C,0.52325064,False,0.65
+Tufts University Public Opinion Lab,666,B/C,0.523578668,False,0.65
+Blumenthal Research Daily,447,F,0.528088363,True,0.0
+Minneapolis Star Tribune,315,B/C,0.529319197,False,0.65
+Mason Strategies,464,B/C,0.53079455,False,0.65
+1892 Polling,461,B/C,0.53079455,False,0.65
+Big Data Poll,251,F,0.530928375,True,0.0
+Ethridge & Associates LLC,89,B/C,0.532586197,False,0.65
+Change Research,48,B-,0.534237667,False,0.7
+Bendixen & Amandi International,29,B/C,0.538561134,False,0.65
+Baruch College Survey Research,22,B/C,0.53914202,False,0.65
+The Polling Company Inc./National Research Inc.,644,B/C,0.539417796,False,0.65
+University of Southern California Center for Economic and Social Research,343,B/C,0.539499296,False,0.65
+Personal Marketing Research,252,B/C,0.540392366,False,0.65
+Scripps Howard,303,B/C,0.541999238,False,0.65
+Market Decisions Research,184,B/C,0.542680067,False,0.65
+Forward Strategies,102,B/C,0.542991149,False,0.65
+Market Solutions Group,188,B/C,0.543042552,False,0.65
+Valley Research,368,B/C,0.54511845,False,0.65
+Voter/Consumer Research,371,B/C,0.545226464,False,0.65
+Targeted Persuasion,579,B/C,0.54748088,False,0.65
+University of Houston Center for Public Policy,351,B/C,0.54748088,False,0.65
+Singularis Group,306,B/C,0.54748088,False,0.65
+Behavior Research Center (Rocky Mountain Poll),27,B/C,0.548878483,False,0.65
+CSP Polling,39,F,0.550162184,True,0.0
+DHM Research,76,B/C,0.557038742,False,0.65
+Franklin Pierce University Marlin Fitzwater Center for Communication,107,B/C,0.557266425,False,0.65
+KG Polling,502,F,0.559729585,True,0.0
+Mercyhurst University Center for Applied Politics,422,B/C,0.562059442,False,0.65
+Odney,524,B/C,0.562059442,False,0.65
+Diamond State Consulting Group,78,B/C,0.562059442,False,0.65
+IMGE Insights,145,B/C,0.562184318,False,0.65
+PSB Research,250,B/C,0.563076917,False,0.65
+Jim Meader (KELOLAND-TV),159,B/C,0.564839263,False,0.65
+University of Tennessee,362,B/C,0.565066317,False,0.65
+Virginia Commonwealth University L. Douglas Wilder School of Government and Public Affairs,370,B/C,0.566665745,False,0.65
+Reconnect Research/Probolsky Research,651,B/C,0.567918562,False,0.65
+Richmond Times-Dispatch,288,B/C,0.570526002,False,0.65
+JMC Analytics/Bold Blue Campaigns,503,B/C,0.57200512,False,0.65
+Manhattanville College,181,B/C,0.573659603,False,0.65
+Global Strategy Group/National Research (Philadelphia Inquirer),119,B/C,0.574440436,False,0.65
+Garin-Hart-Yang/Global Strategy Group,412,B/C,0.574779637,False,0.65
+War Room Logistics,374,B/C,0.574779637,False,0.65
+High Point University Survey Research Center,139,B/C,0.578175028,False,0.65
+Jorge Benítez,600,B/C,0.57931761,False,0.65
+Strategic Research Associates,462,B/C,0.579415468,False,0.65
+GreatBlue Research,748,B/C,0.58461042,False,0.65
+African American Research Collaborative,733,B/C,0.584623841,False,0.65
+Crantford Research,62,B/C,0.585865547,False,0.65
+The Polling Company Inc.,337,B/C,0.586622362,False,0.65
+Lincoln Institute,170,B/C,0.588148869,False,0.65
+Strategy Research,322,B/C,0.588609977,False,0.65
+Big Ten,31,B/C,0.590698647,False,0.65
+Rivercity Polling,291,B/C,0.592942567,False,0.65
+Aspen Media & Market Research,17,B/C,0.593547472,False,0.65
+Florida International University/Univision,98,B/C,0.595517423,False,0.65
+New Mexico State University,230,B/C,0.595517423,False,0.65
+Myers Research & Strategic Services,319,B/C,0.597241366,False,0.65
+University of Wisconsin-Milwaukee Institute for Survey and Policy Research,366,B/C,0.59750426,False,0.65
+AYTM,635,B/C,0.597837399,False,0.65
+"Drake Research & Strategy, Inc.",329,B/C,0.59796831,False,0.65
+Quest Research Group,285,B/C,0.598431832,False,0.65
+Thirty-Ninth Street Strategies,460,B/C,0.598722161,False,0.65
+Purple Strategies,265,B/C,0.600596018,False,0.65
+Clarus Research Group,53,B/C,0.602380518,False,0.65
+Frank N. Magid Associates Inc.,105,B/C,0.602606117,False,0.65
+Morningside College Col. Bud Day Center for Civic Engagement,536,B/C,0.603268681,False,0.65
+Pasquines,552,B/C,0.604950571,False,0.65
+Canisius College,43,B/C,0.611211346,False,0.65
+Central Surveys Inc.,46,B/C,0.611211346,False,0.65
+ASA Marketing Group,5,B/C,0.612380265,False,0.65
+Triumph Campaigns,339,B/C,0.614263666,False,0.65
+BIGresearch,19,B/C,0.614492783,False,0.65
+West Chester University,377,B/C,0.614996703,False,0.65
+Cooper & Secrest,60,B/C,0.617550643,False,0.65
+Escalent,189,B/C,0.617550643,False,0.65
+University of Wisconsin-Milwaukee Center for Urban Initiatives and Research,749,B/C,0.61900197,False,0.65
+Probolsky Research,259,B/C,0.620487263,False,0.65
+Analytical Group,11,B/C,0.620942444,False,0.65
+Penta,576,B/C,0.622131011,False,0.65
+Dynamics Marketing,83,B/C,0.623054055,False,0.65
+Vox Populi Communications,529,B/C,0.623054055,False,0.65
+Diversified Research Inc,80,B/C,0.623054055,False,0.65
+OurProgress (The Progress Campaign),561,F,0.624851093,True,0.0
+Neighborhood Research and Media,227,B/C,0.625206391,False,0.65
+"Lauer, Lalley, Victoria",168,B/C,0.627829411,False,0.65
+Market Trends Pacific,190,B/C,0.63044707,False,0.65
+Cromer Group,65,B/C,0.630480688,False,0.65
+Centre College,47,B/C,0.630512698,False,0.65
+Schoen Cooperman Research,301,B/C,0.63074165,False,0.65
+Seven Letter Insight,661,B/C,0.631599664,False,0.65
+HighGround Inc.,416,B/C,0.632468118,False,0.65
+NRECA Market Research,223,B/C,0.633866262,False,0.65
+Dartmouth College Nelson A. Rockefeller Center for Public Policy and the Social Sciences,72,B/C,0.633992963,False,0.65
+Wood Communications Group,388,B/C,0.635489292,False,0.65
+Liberty Opinion Research,169,B/C,0.636434261,False,0.65
+Pacific Market Research,459,B/C,0.638141661,False,0.65
+Dynata,283,B/C,0.639158769,False,0.65
+"University of Nevada, Las Vegas Cannon Survey Center",356,B/C,0.640776522,False,0.65
+Wick Communications,381,B/C,0.644244948,False,0.65
+CallFire,42,B/C,0.644643386,False,0.65
+Zimmerman & Associates/Marketing Intelligence,394,B/C,0.644863542,False,0.65
+Rossman Group,294,B/C,0.645434701,False,0.65
+Victoria Research & Consulting,369,B/C,0.650167742,False,0.65
+TargetSmart,332,B/C,0.650635564,False,0.65
+Iona University Political Science Department,152,B/C,0.652073906,False,0.65
+QEV Analytics,266,B/C,0.653387023,False,0.65
+West Virginia Research Center,378,B/C,0.653908529,False,0.65
+Southeastern Louisiana University Social Science Research Center,309,B/C,0.654669009,False,0.65
+Public Strategies Inc.,264,B/C,0.655380581,False,0.65
+Becker Institute,26,B/C,0.656088409,False,0.65
+Rice University,286,B/C,0.661077077,False,0.65
+Global Strategy Group,118,B/C,0.661546809,False,0.65
+MarblePort,182,B/C,0.662388676,False,0.65
+The Florida Poll,99,B/C,0.663509818,False,0.65
+Independent Market Research,148,B/C,0.664394043,False,0.65
+TMR Research,328,B/C,0.666295052,False,0.65
+Old Dominion University,238,B/C,0.667631557,False,0.65
+CrossTarget,66,B/C,0.668173029,False,0.65
+Marketing Research Institute,192,B/C,0.668274663,False,0.65
+University of Georgia Survey Research Center,674,B/C,0.671026566,False,0.65
+Alloy Analytics,734,B/C,0.671103139,False,0.65
+A&A Research,2,B/C,0.673290152,False,0.65
+Capital Survey Research Center,44,B/C,0.673439744,False,0.65
+Premise,709,B/C,0.673628484,False,0.65
+Cherry Communications,49,B/C,0.675891324,False,0.65
+SmithJohnson Opinion Research,367,B/C,0.679817024,False,0.65
+Illinois Wesleyan University Department of Political Science,147,B/C,0.680665455,False,0.65
+Decision Forecasting,77,B/C,0.687200293,False,0.65
+Tulsa Surveys,341,B/C,0.689068602,False,0.65
+Constituent Dynamics,58,B/C,0.690400204,False,0.65
+Moore Information Group,217,B/C,0.690678903,False,0.65
+TeleResearch Corporation,335,B/C,0.691105075,False,0.65
+Feldman Group,93,B/C,0.692234108,False,0.65
+Multi-Quest International,220,B/C,0.692902891,False,0.65
+Southern Research Group,649,B/C,0.693616739,False,0.65
+Minnesota State University Moorhead Public Affairs Institute,211,B/C,0.694310659,False,0.65
+Great Lakes Strategies Group,125,B/C,0.695982266,False,0.65
+Victory Insights,673,B/C,0.698094128,False,0.65
+Harper Polling/Clarity Campaign Labs,513,B/C,0.699315769,False,0.65
+"California State University, Bakersfield",41,B/C,0.699686964,False,0.65
+Sky Research,665,B/C,0.700026382,False,0.65
+University of Southern California Schwarzenegger Institute for State and Global Policy,648,B/C,0.701915577,False,0.65
+Global Strategy Group/GBAO (Navigator Research),413,B/C,0.703143165,False,0.65
+University of Illinois at Chicago,352,B/C,0.703811097,False,0.65
+Detroit Free Press,663,B/C,0.704696476,False,0.65
+Southern Opinion Research,311,B/C,0.707527295,False,0.65
+Howey Politics/DePauw University,142,B/C,0.708182366,False,0.65
+Kimball Political Consulting,163,B/C,0.708259558,False,0.65
+University of Wisconsin Survey Center,365,B/C,0.708360993,False,0.65
+Redfield & Wilton Strategies,562,B/C,0.712568699,False,0.65
+Opinion Consultants,241,B/C,0.713218157,False,0.65
+University of North Carolina School of Journalism and Mass Communication,359,B/C,0.714331227,False,0.65
+Montana State University Billings Mountain States Poll,216,B/C,0.714780437,False,0.65
+Zata3,392,B/C,0.714885828,False,0.65
+GaPundit.com,111,B/C,0.717320169,False,0.65
+Arthur J. Finkelstein & Associates,16,B/C,0.719109437,False,0.65
+Baselice & Associates,23,B/C,0.719616182,False,0.65
+MarketAide Services Inc.,191,B/C,0.72203978,False,0.65
+Y2 Analytics,389,B/C,0.722166959,False,0.65
+Bannon Communications Research,21,B/C,0.722203185,False,0.65
+New Frontier Strategy,229,B/C,0.722871644,False,0.65
+Clout Research,55,B/C,0.72294946,False,0.65
+Forman Center,100,B/C,0.725841286,False,0.65
+SMS Research & Marketing Services,296,B/C,0.727905237,False,0.65
+Auburn University at Montgomery Department of Political Science and Public Administration,588,B/C,0.728867121,False,0.65
+Abacus Associates,6,B/C,0.729882139,False,0.65
+Baydoun Consulting,25,B/C,0.734964032,False,0.65
+20/20 Insight,1,B/C,0.735003589,False,0.65
+Lester & Associates,293,B/C,0.740284224,False,0.65
+SocialSphere,307,B/C,0.742547329,False,0.65
+Zia Poll,393,B/C,0.742980809,False,0.65
+PSI,248,B/C,0.746856489,False,0.65
+Hays Research Group,136,B/C,0.746938056,False,0.65
+Gazette Communications,640,B/C,0.747290103,False,0.65
+Jeffrey Stonecash,158,B/C,0.750709115,False,0.65
+Stetson University Center for Public Opinion Research,730,B/C,0.752104037,False,0.65
+Ed Renwick/Loyola University New Orleans,85,B/C,0.752477399,False,0.65
+Consumer Logic,59,B/C,0.752623187,False,0.65
+Hoffman Research Group,141,B/C,0.752942826,False,0.65
+Patinkin Research Strategies,490,B/C,0.75322046,False,0.65
+Datamar Analytics,75,B/C,0.754013726,False,0.65
+Glover Park Group,120,B/C,0.760836663,False,0.65
+Beacon Research,545,B/C,0.763531768,False,0.65
+Neighbor,226,B/C,0.765318189,False,0.65
+Cometrends,631,B/C,0.765936666,False,0.65
+Rainmaker Media Group,276,B/C,0.772052286,False,0.65
+EMC Research,130,B/C,0.773346619,False,0.65
+VCreek/AMG,501,B/C,0.773749928,False,0.65
+Open Model Project,629,B/C,0.774043536,False,0.65
+American Research Group,9,C+,0.774929409,False,0.6
+Lycoming College Polling Institute,176,B/C,0.775138639,False,0.65
+The Kitchens Group,664,B/C,0.775923483,False,0.65
+Lauer Johnson Research,167,B/C,0.778955675,False,0.65
+Saguaro Strategies,298,B/C,0.784367937,False,0.65
+University of Colorado Boulder American Politics Research Lab,580,B/C,0.785173003,False,0.65
+University of Alabama at Birmingham,344,B/C,0.786238941,False,0.65
+Ohio University,237,B/C,0.78843299,False,0.65
+Patriot Polling,732,B/C,0.788913672,False,0.65
+"Normington, Petts & Associates",232,B/C,0.788993048,False,0.65
+ccAdvertising,396,B/C,0.78899574,False,0.65
+Univision/Latino Decisions/North Star Opinion Research,516,B/C,0.792824193,False,0.65
+Bold Decision,686,B/C,0.79810803,False,0.65
+SSRS,297,C+,0.798818735,False,0.6
+brilliant corners Research & Strategies,564,B/C,0.79911007,False,0.65
+RMS Research,273,B/C,0.801172512,False,0.65
+Hellenthal & Associates,137,B/C,0.801438448,False,0.65
+Data West Polling,74,B/C,0.804577474,False,0.65
+Hill Research Consultants,140,B/C,0.805907515,False,0.65
+WCIA-TV,373,B/C,0.810060226,False,0.65
+Nelson Research,703,B/C,0.812652276,False,0.65
+Hickman Analytics,415,B/C,0.823329694,False,0.65
+Gonzales Research & Marketing Strategies Inc.,121,B/C,0.82412566,False,0.65
+Arizona State University Morrison Institute for Public Policy,15,B/C,0.828249334,False,0.65
+The Justice Collaborative Institute,630,B/C,0.832963313,False,0.65
+Phillips Academy,699,B/C,0.832990222,False,0.65
+Hendrix College,138,B/C,0.834607262,False,0.65
+University of Texas at Tyler Center for Opinion Research,458,B/C,0.836843262,False,0.65
+J.L. Partners,619,B/C,0.837752136,False,0.65
+Opinium,559,B/C,0.842293216,False,0.65
+Rutgers University Eagleton Center for Public Interest Polling,295,B/C,0.842750615,False,0.65
+Colby College,593,B/C,0.843439141,False,0.65
+Cole Hargrave Snodgrass & Associates,56,B/C,0.845837196,False,0.65
+GCR & Associates,110,B/C,0.850827298,False,0.65
+East Tennessee State University Applied Social Research Laboratory,456,B/C,0.856053863,False,0.65
+Concord Public Opinion Partners,553,B/C,0.861806842,False,0.65
+Global Marketing Research Services,621,B/C,0.863252398,False,0.65
+Brandwatch Qriously,610,B/C,0.873023236,False,0.65
+Roanoke College Institute for Policy and Opinion Research,292,B/C,0.873952422,False,0.65
+Victory Enterprises,525,B/C,0.88528955,False,0.65
+Loras College Public Opinion Survey Center,171,B/C,0.909346465,False,0.65
+Bainbridge Media Group,656,B/C,0.910712224,False,0.65
+Western Kentucky University Social Science Research Center,379,B/C,0.910738729,False,0.65
+Market Research Insight,185,B/C,0.911192619,False,0.65
+Schapiro Group,300,B/C,0.922105846,False,0.65
+Millersville University Center for Politics and Public Affairs,210,B/C,0.932868195,False,0.65
+Hampton University Center for Public Policy,131,B/C,0.934462814,False,0.65
+Targoz Market Research,454,C,0.941748672,False,0.55
+Massie & Associates,199,B/C,0.948918944,False,0.65
+Marketing Resource Group (MRG),193,B/C,0.957337481,False,0.65
+Greg Smith & Associates,128,B/C,0.962814453,False,0.65
+University of Iowa Hawkeye Poll Cooperative,353,B/C,0.981862754,False,0.65
+BWD Global,527,B/C,0.985584347,False,0.65
+SoonerPoll.com,308,C,0.986653448,False,0.55
+SurveyMonkey,324,C,0.987862684,False,0.55
+RABA Research,269,B/C,0.98929273,False,0.65
+Citizen Data,616,B/C,0.99893993,False,0.65
+DeSales University Kamran Afshar Data Analytics Center,474,B/C,1.011293344,False,0.65
+Kiaer Research,585,B/C,1.014748991,False,0.65
+Bluegrass Community and Technical College,632,B/C,1.042851092,False,0.65
+Craciun Research Group,61,B/C,1.043927948,False,0.65
+Digital Research,64,B/C,1.046166654,False,0.65
+Marketing Workshop,194,B/C,1.049072564,False,0.65
+Repass,268,B/C,1.05146632,False,0.65
+Momentum Analysis,214,B/C,1.05830276,False,0.65
+Swayable,543,C,1.063538011,False,0.55
+St. Cloud State University,312,B/C,1.092513379,False,0.65
+TargetPoint,331,B/C,1.093213455,False,0.65
+Baldwin Wallace University Community Research Institute,401,B/C,1.122230754,False,0.65
+Meredith College,423,B/C,1.123902697,False,0.65
+MRG Research,207,B/C,1.140888935,False,0.65
+Glascock Group,116,B/C,1.14286386,False,0.65
+Elucd,549,B/C,1.149547178,False,0.65
+Tomahawk Strategies,737,B/C,1.182473185,False,0.65
+Carroll Strategies,450,B/C,1.202620296,False,0.65
+Dane & Associates,71,B/C,1.203618969,False,0.65
+GOP Calls,654,B/C,1.210615218,False,0.65
+CPEC,38,B/C,1.244696795,False,0.65
+Amber Integrated,556,B/C,1.263734707,False,0.65
+Riggs Research Services,289,B/C,1.267106015,False,0.65
+Thomas Partners Strategies,452,B/C,1.269822037,False,0.65
+University of Minnesota Hubert H. Humphrey School of Public Affairs,143,B/C,1.273195129,False,0.65
+Target Insyght,330,C/D,1.317818594,False,0.45
+Saint Leo University Polling Institute,299,C/D,1.321183957,False,0.45
+Center Street PAC,715,C/D,1.323183845,False,0.45
+Point Blank Political,550,C/D,1.325672917,False,0.45
+Mitchell Research & Communications,213,C-,1.330375769,False,0.5
+"Island Analytics & Marketing, LLC",736,C/D,1.340795652,False,0.45
+FM3 Research,91,C/D,1.356480517,False,0.45
+University of Wyoming Survey & Analysis Center,667,C/D,1.356529149,False,0.45
+McLaughlin & Associates,203,C/D,1.432783584,False,0.45
+Triton Polling & Research,497,C/D,1.494459726,False,0.45
+The Political Matrix/The Listener Group,677,C/D,1.508659031,False,0.45
+Opinion Research Associates,242,C/D,1.532393163,False,0.45
+TCJ Research,327,F,1.645346787,True,0.0
+Brown University A. Alfred Taubman Center for American Politics and Policy,35,C/D,1.679348715,False,0.45
+Brigham Young University Center for the Study of Elections and Democracy,727,C/D,1.680264151,False,0.45
+Indiana University-Purdue University Fort Wayne Mike Downs Center for Indiana Politics,150,C/D,1.870769927,False,0.45
+"Long Island University Steven S. Hornstein Center for Policy, Polling, and Analysis",633,C/D,1.884306564,False,0.45
+Nielson Brothers Polling,231,C/D,2.024527408,False,0.45
+Ascend Action,726,C/D,2.3949211,False,0.45
+Jayhawk Consulting Services,157,C/D,2.514291132,False,0.45
+Fort Hays State University Docking Institute of Public Affairs,101,C/D,2.652862843,False,0.45

@@ -69,6 +69,71 @@ def midterm_pres_penalty(year, pres_party):
     return -midterm_flag(year) * pres_party_D(pres_party)
 
 
+# ------------------------------------------------------------------ baseline inputs (v1)
+# The team's baseline spec. Linear regression can only ADD columns, never multiply them,
+# so every "depends on which party holds the White House" effect is multiplied in here.
+# Signs follow the target: positive = good for Democrats.
+
+def approval_x_pres(approve_pct, pres_flag):
+    """
+    (approval - 50) x president flag (+1 D president, -1 R).
+    Approval is in percent; 50% is neutral. A popular D president is positive (helps Ds),
+    a popular R president negative. E.g. Bush 2008 at 25%: (25 - 50) x -1 = +25.
+    """
+    a = pd.to_numeric(pd.Series(approve_pct), errors="coerce").to_numpy(dtype=float)
+    return (a - 50.0) * np.asarray(pres_flag, dtype=float)
+
+
+def approval_x_pres_midterm(approve_pct, pres_flag, midterm):
+    """approval_x_pres in midterm years, 0 otherwise ('approval counts extra in midterms')."""
+    return approval_x_pres(approve_pct, pres_flag) * np.asarray(midterm, dtype=float)
+
+
+def midterm_x_pres(midterm, pres_flag):
+    """
+    midterm flag x president flag: +1 midterm under a D president, -1 under an R
+    president, 0 in presidential years. The regression learns the sign (expected
+    negative: the president's party loses ground in midterms).
+    """
+    return np.asarray(midterm, dtype=float) * np.asarray(pres_flag, dtype=float)
+
+
+BASELINE_INPUTS = ["lean", "generic_ballot", "incumbency_signed", "approval_x_pres",
+                   "midterm_x_pres", "approval_x_pres_midterm"]
+
+
+def add_baseline_inputs(df: pd.DataFrame, national: pd.DataFrame, incumbency: pd.DataFrame,
+                        approval_source: str = "reliable_30d") -> pd.DataFrame:
+    """
+    Add every baseline input column to a race table (one row per race, KEYS + lean).
+
+        national    inputs.build_national(...)   one row per year
+        incumbency  inputs.load_incumbency(...)  one row per race
+        approval_source  which approval series feeds approval_x_pres*, e.g.
+                    'reliable_30d' (sheet: reliable | broad, window: latest | 30d | 90d)
+
+    Adds: generic_ballot, midterm_flag, pres_flag, approval (the chosen series, %),
+    approval_x_pres, approval_x_pres_midterm, midterm_x_pres, incumbency_signed.
+    Races missing from the incumbency file get NaN (reported by the caller).
+    """
+    col = f"approval_{approval_source}"
+    if col not in national:
+        raise KeyError(f"unknown approval_source {approval_source!r}; have "
+                       f"{sorted(c[len('approval_'):] for c in national if c.startswith('approval_'))}")
+    nat = (national[["year", "generic_ballot", "midterm_flag", "pres_flag", col]]
+           .rename(columns={col: "approval"}))
+    out = df.drop(columns=[c for c in nat.columns if c != "year" and c in df], errors="ignore")
+    out = out.merge(nat, on="year", how="left", validate="many_to_one")
+    out["approval_x_pres"] = approval_x_pres(out["approval"], out["pres_flag"])
+    out["approval_x_pres_midterm"] = approval_x_pres_midterm(out["approval"], out["pres_flag"],
+                                                             out["midterm_flag"])
+    out["midterm_x_pres"] = midterm_x_pres(out["midterm_flag"], out["pres_flag"])
+    inc = incumbency[KEYS + ["incumbency_signed"]]
+    out = out.drop(columns=["incumbency_signed"], errors="ignore").merge(
+        inc, on=KEYS, how="left", validate="one_to_one")
+    return out
+
+
 def incumbency_x_lean(incumbent_party, lean):
     """
     signed incumbency x partisan lean (baseline input from the doc). Lets the

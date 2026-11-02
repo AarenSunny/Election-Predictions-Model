@@ -12,9 +12,17 @@ def test_baseline_yaml_loads_and_is_valid():
     for section in ("years", "data", "baseline", "residual_model", "feature_horizons",
                     "probability", "polls", "kalshi", "submission"):
         assert section in cfg
-    assert cfg["baseline"]["features"][:4] == ["lean", "generic_ballot",
-                                               "approval_signed", "midterm_flag"]
-    assert "incumbency_signed" in cfg["residual_model"]["features"]
+    assert cfg["baseline"]["features"][0] == "lean"
+    for key in ("results", "lean", "baseline_residuals"):     # paths train.run() reads
+        assert key in cfg["data"]
+    # incumbency_signed lives in exactly one stage (baseline or residual model)
+    stages = [f for f in ("baseline", "residual_model") if "incumbency_signed" in cfg[f]["features"]]
+    assert len(stages) == 1
+    for key in ("generic_ballot", "midterm_flag", "president_flag", "approval", "incumbency"):
+        assert key in cfg["data"], key                                 # baseline input files
+    from election_prediction.inputs import APPROVAL_SOURCES
+    assert cfg["baseline"]["approval_source"] in APPROVAL_SOURCES
+    assert cfg["baseline"]["drop_specials"] is True
 
 
 def test_validate_config_catches_mistakes():

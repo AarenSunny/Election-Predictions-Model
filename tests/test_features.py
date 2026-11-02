@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from election_prediction import baseline, train
+from election_prediction import train
 from election_prediction.features import (
     add_horizon_changes,
     add_missing_flags,
@@ -153,8 +153,7 @@ def test_donor_mix_diff():
     assert np.isnan(money_features(w.drop(columns=["D_small_donor_contrib"])).loc[0, "donor_mix_diff"])
 
 
-def test_model_files_are_still_skeletons():
-    with pytest.raises(NotImplementedError):
-        baseline.fit_baseline(pd.DataFrame())
+def test_residual_model_is_still_a_skeleton():
+    # the baseline is implemented now (tests/test_baseline.py); stage 2 is not yet
     with pytest.raises(NotImplementedError):
         train.fit_residual_model(pd.DataFrame(), [], {})
