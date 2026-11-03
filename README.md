@@ -163,3 +163,8 @@ weight) is in `configs/baseline.yaml`.
 - We picked a lot of underdogs on purpose, so our score will swing a lot. A simulation of
   election night puts our expected Full Congress score around 80 to 90 points, with only
   about 60 picks correct, against about 41 for picking every favorite.
+
+## Thanks
+
+Special thanks to the Cook Political Report for giving us free access to their Partisan
+Voting Index data. The district and state lean at the heart of this model comes from them.
