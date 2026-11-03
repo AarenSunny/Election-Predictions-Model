@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-import pytest
 
 from election_prediction import train
 from election_prediction.features import (
@@ -153,7 +152,14 @@ def test_donor_mix_diff():
     assert np.isnan(money_features(w.drop(columns=["D_small_donor_contrib"])).loc[0, "donor_mix_diff"])
 
 
-def test_residual_model_is_still_a_skeleton():
-    # the baseline is implemented now (tests/test_baseline.py); stage 2 is not yet
-    with pytest.raises(NotImplementedError):
-        train.fit_residual_model(pd.DataFrame(), [], {})
+def test_residual_model_learns_and_skips_rows_without_data():
+    rng = np.random.default_rng(0)
+    n = 600
+    df = pd.DataFrame({"year": np.repeat([2016, 2018, 2020], n // 3),
+                       "x": rng.normal(0, 1, n), "chamber_senate": 0})
+    df["residual"] = 0.05 * df["x"] + rng.normal(0, 0.01, n)
+    m = train.fit_residual_model(df, ["x", "chamber_senate"],
+                                 {"n_estimators": 200, "early_stopping_rounds": 20})
+    test = pd.DataFrame({"x": [1.0, -1.0, np.nan], "chamber_senate": [0, 0, 0]})
+    pred = train.predict_residual(m, test, ["x", "chamber_senate"])
+    assert pred[0] > 0.02 and pred[1] < -0.02 and pred[2] == 0.0   # blank data -> no correction

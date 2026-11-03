@@ -1,0 +1,36 @@
+race_id,chamber,predicted_winner_party,candidate_name,win_probability
+AK-SEN,Senate,R,Dan J. Sullivan,0.4788
+AL-SEN,Senate,D,Everett Wess,0.0174
+AR-SEN,Senate,D,Hallie Shoffner,0.0196
+CO-SEN,Senate,R,Mark Baisley,0.0116
+DE-SEN,Senate,R,Michael Katz,0.0108
+FL-SEN,Senate,D,Angie Nixon,0.1479
+GA-SEN,Senate,R,Mike Collins,0.0348
+IA-SEN,Senate,R,Ashley Hinson,0.5226
+ID-SEN,Senate,I,Todd Achilles,0.0045
+IL-SEN,Senate,R,Don Tracy,0.0109
+KS-SEN,Senate,R,Roger Marshall,0.5823
+KY-SEN,Senate,R,Andy Barr,0.9712
+LA-SEN,Senate,D,Jamie Davis,0.0394
+MA-SEN,Senate,R,John Deaton,0.0065
+ME-SEN,Senate,R,Susan Collins,0.2569
+MI-SEN,Senate,R,Mike Rogers,0.1929
+MN-SEN,Senate,R,Michele Tafoya,0.0856
+MS-SEN,Senate,D,Scott Colom,0.0966
+MT-SEN,Senate,D,Alani Bankhead,0.0201
+NC-SEN,Senate,R,Michael Whatley,0.0496
+NE-SEN,Senate,I,Dan Osborn,0.009
+NH-SEN,Senate,R,John E. Sununu,0.0709
+NJ-SEN,Senate,R,Justin Murphy,0.0169
+NM-SEN,Senate,R,Larry Marker,0.018
+OH-SEN,Senate,R,Jon Husted,0.445
+OK-SEN,Senate,D,N'Kiyla Jasmine Thomas,0.0171
+OR-SEN,Senate,R,David Brock Smith,0.0101
+RI-SEN,Senate,R,Raymond McKay,0.0063
+SC-SEN,Senate,R,Darline Graham,0.7796
+SD-SEN,Senate,I,Brian Bengs,0.0091
+TN-SEN,Senate,D,Marquita Bradshaw,0.014
+TX-SEN,Senate,R,Ken Paxton,0.3475
+VA-SEN,Senate,R,Bert Mizusawa,0.0127
+WV-SEN,Senate,D,Rachel Fetty Anderson,0.0094
+WY-SEN,Senate,D,James W. Byrd,0.0086

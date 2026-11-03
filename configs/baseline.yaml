@@ -21,6 +21,9 @@ data:
   incumbency: data/raw/incumbency/congressional_incumbency_1998_2026.xlsx
   cook_house: data/raw/cook/Cook_PVI_1997-2026.xlsx       # inputs to scripts/convert_cook_pvi.py
   cook_senate: data/raw/cook/COOK_SENATE_PVI.xlsx
+  residual_features:
+    - data/processed/residual_features.csv    # scripts/build_acs_features.py (ACS 2016-2026)
+    - data/processed/candidate_features.csv   # scripts/build_candidate_features.py (FEC + past overperformance)
   baseline_residuals: data/processed/baseline_residuals.csv   # for looking at misses ONLY: stage 2 is
                                      # trained on residuals rebuilt inside each test year (twostage.py)
   house_results: data/raw/mit_house_1976_2024.csv     # MIT Election Lab, candidate-level
@@ -55,7 +58,32 @@ baseline:
 # Column names in the processed table. Change suffixes: _chg_<N>y = current minus
 # N years earlier (see feature_horizons). Candidate features are D minus R.
 residual_model:
+  use: false              # forecast.py adds the residual correction only when true (set after twostage test)
   features:
+    # candidate-level (2010-2026)
+    - prev_overperf               # same incumbent's out-of-fold residual in their previous race
+    - fec_fund_share              # D share of (receipts - self-funding) - 0.5
+    - fec_log_ratio
+    - fec_cash_share
+    - fec_self_fund_diff
+    # ACS (available now: 2016-2026; 2022 House and 2026 redrawn states blank)
+    - acs_rel_log_income
+    - acs_rel_log_rent
+    - acs_median_age
+    - acs_pct_poverty
+    - acs_pct_ba_plus
+    - acs_pct_less_hs
+    - acs_eth_nh_black
+    - acs_eth_hispanic
+    - acs_eth_nh_asian
+    - acs_eth_other
+    - acs_ind_agri_mining
+    - acs_ind_construction
+    - acs_ind_manufacturing
+    - acs_ind_prof_finance
+    - acs_ind_educ_health
+    - acs_ind_public_admin
+    # planned (used automatically once their columns exist):
     # Regional economy
     - unemployment
     - unemployment_chg_1y
@@ -178,6 +206,9 @@ issue_composite:
 probability:
   dist: t                 # normal | t (t: fewer upsets near 50/50, more in lopsided races)
   t_df: 5
+  sigma_by_chamber: true  # item 4: separate race-level sigma for House / Senate (shared national part)
+  model_weight_vs_market: 0.25   # forecast.py: p = logistic(w*logit(model) + (1-w)*logit(Kalshi)) before picking.
+                                 # 0.25 = trust the market more (it has polls + candidate info); 1.0 = model only
 
 polls:
   half_life_days: 12

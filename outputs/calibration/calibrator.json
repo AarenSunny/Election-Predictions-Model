@@ -1,0 +1,13 @@
+{
+  "method": "t5",
+  "coefficients": [],
+  "chambers": [
+    "House",
+    "Senate"
+  ],
+  "sigmas": {
+    "House": 0.08864977657103525,
+    "Senate": 0.09570798943189494
+  },
+  "pooled_sigma": 0.08957037434998649
+}

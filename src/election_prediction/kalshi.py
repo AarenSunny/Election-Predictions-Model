@@ -30,6 +30,10 @@ BASE_URL = "https://external-api.kalshi.com/trade-api/v2"
 HOUSE_SERIES = "KXHOUSERACE"
 
 _EVENT_RE = re.compile(r"^(?P<series>[A-Z0-9]+)-(?P<st>[A-Z]{2})(?P<dist>AL|\d{1,2})?-(?P<yy>\d{2})")
+# Competitive races live in their own series, one per race: HOUSENY17-26, HOUSEAKAL-26,
+# SENATENC-26 (found 2026-11-02: these races are absent from KXHOUSERACE).
+_RACE_EVENT_RE = re.compile(
+    r"^(?:KX)?(?P<ch>HOUSE|SENATE)(?P<st>[A-Z]{2})(?P<dist>AL|\d{1,2}|S)?-(?P<yy>\d{2})$")
 
 
 # ------------------------------------------------------------------ fetch
@@ -46,7 +50,11 @@ def fetch_markets(series_ticker: str, status: str | None = "open", limit: int = 
     for _ in range(max_pages):
         if cursor:
             params["cursor"] = cursor
-        r = s.get(f"{BASE_URL}/markets", params=params, timeout=30)
+        for attempt in range(5):
+            r = s.get(f"{BASE_URL}/markets", params=params, timeout=30)
+            if r.status_code != 429:
+                break
+            time.sleep(1.5 * 2 ** attempt)
         r.raise_for_status()
         js = r.json()
         out.extend(js.get("markets", []))
@@ -58,8 +66,50 @@ def fetch_markets(series_ticker: str, status: str | None = "open", limit: int = 
 
 
 # ------------------------------------------------------------------ parse
+def race_event_tickers(chamber: str, state: str, district: int, special: bool = False,
+                       year: int = 2026) -> list[str]:
+    """Candidate per-race event tickers, tried in order. Kalshi isn't consistent:
+    HOUSENY17-26 but HOUSEAZ6-26 (no zero padding), HOUSEAKAL-26, SENATENC-26,
+    and specials SENATEOHS-26."""
+    yy = f"{year % 100:02d}"
+    if chamber == "Senate":
+        return [f"SENATE{state}S-{yy}", f"SENATE{state}-{yy}"] if special else [f"SENATE{state}-{yy}"]
+    d = int(district)
+    if d == 0:
+        return [f"HOUSE{state}AL-{yy}", f"KXHOUSE{state}AL-{yy}"]
+    # newer markets (e.g. redrawn 2026 districts) use a KX prefix: KXHOUSEMO5-26, KXHOUSEUT02-26
+    return list(dict.fromkeys([f"HOUSE{state}{d:02d}-{yy}", f"HOUSE{state}{d}-{yy}",
+                               f"KXHOUSE{state}{d}-{yy}", f"KXHOUSE{state}{d:02d}-{yy}"]))
+
+
+def race_event_ticker(chamber: str, state: str, district: int, year: int = 2026) -> str:
+    return race_event_tickers(chamber, state, district, False, year)[0]
+
+
+def fetch_event(event_ticker: str, session=None) -> list[dict]:
+    """All markets of one event (one race)."""
+    import requests
+
+    s = session or requests.Session()
+    for attempt in range(5):                 # Kalshi rate-limits bursts (HTTP 429): back off, retry
+        r = s.get(f"{BASE_URL}/markets", params={"event_ticker": event_ticker, "limit": 100},
+                  timeout=30)
+        if r.status_code != 429:
+            break
+        time.sleep(1.5 * 2 ** attempt)
+    r.raise_for_status()
+    return r.json().get("markets", [])
+
+
 def parse_event_ticker(event_ticker: str, chamber: str) -> dict | None:
-    """'KXHOUSERACE-NY17-26' -> {year: 2026, chamber, state: 'NY', district: 17}."""
+    """'KXHOUSERACE-NY17-26' or 'HOUSENY17-26' / 'SENATENC-26' -> race keys."""
+    r = _RACE_EVENT_RE.match(str(event_ticker))
+    if r:
+        ch = "Senate" if r.group("ch") == "SENATE" else "House"
+        dist = r.group("dist")
+        district = 0 if (dist in (None, "AL", "S") or ch == "Senate") else int(dist)
+        return {"year": 2000 + int(r.group("yy")), "chamber": ch, "state": r.group("st"),
+                "district": district}
     m = _EVENT_RE.match(str(event_ticker))
     if not m:
         return None
@@ -151,11 +201,47 @@ def race_probabilities(cands: pd.DataFrame, method: str = "two_party",
 
 
 def snapshot(house_series: str = HOUSE_SERIES, senate_series: str | None = None,
-             method: str = "two_party") -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Fetch now and return (candidate_table, race_table), both timestamped."""
+             method: str = "two_party", races: pd.DataFrame | None = None,
+             pause: float = 0.15) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """
+    Fetch now and return (candidate_table, race_table), both timestamped.
+    races (keys: chamber, state, district, special): every race NOT found in the House
+    series is fetched from its own event (HOUSENY17-26, SENATENC-26). A Senate event is
+    marked special when that state's only 2026 Senate race in `races` is a special.
+    """
     frames = [markets_to_table(fetch_markets(house_series), "House")]
     if senate_series:
         frames.append(markets_to_table(fetch_markets(senate_series), "Senate"))
+    have = pd.concat(frames, ignore_index=True)
+    if races is not None:
+        import requests
+        sess = requests.Session()
+        got = set() if have.empty else {
+            (r.chamber, r.state, int(r.district)) for r in have.itertuples()}
+        todo = races.drop_duplicates(["chamber", "state", "district", "special"])
+        n_try = n_found = 0
+        for _, r in todo.iterrows():
+            key = (r["chamber"], r["state"], int(r["district"]))
+            if key in got:
+                continue
+            n_try += 1
+            mk = []
+            for tk in race_event_tickers(*key, special=bool(r["special"])):
+                try:
+                    mk = fetch_event(tk, sess)
+                except Exception as e:  # noqa: BLE001
+                    print(f"   {tk}: {str(e)[:80]}")
+                if mk:
+                    break
+                time.sleep(pause)
+            if mk:
+                n_found += 1
+                t = markets_to_table(mk, r["chamber"])
+                if r["chamber"] == "Senate":
+                    t["special"] = bool(r["special"])
+                frames.append(t)
+            time.sleep(pause)
+        print(f"per-race events: tried {n_try}, found {n_found}")
     cands = pd.concat(frames, ignore_index=True)
     stamp = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
     cands["pulled_at_utc"] = stamp
@@ -170,8 +256,14 @@ def main(argv=None):
     ap.add_argument("--house-series", default=HOUSE_SERIES)
     ap.add_argument("--senate-series", default=None)
     ap.add_argument("--method", default="two_party", choices=["two_party", "all_candidates"])
+    ap.add_argument("--races", default=None,
+                    help="race list CSV (e.g. outputs/predictions_2026.csv): also fetch each race "
+                         "missing from the House series from its own event, and all Senate races")
     a = ap.parse_args(argv)
-    cands, races = snapshot(a.house_series, a.senate_series, a.method)
+    race_list = None
+    if a.races:
+        race_list = pd.read_csv(a.races)[["chamber", "state", "district", "special"]]
+    cands, races = snapshot(a.house_series, a.senate_series, a.method, races=race_list)
     races.to_csv(a.out, index=False)
     cands.to_csv(a.out.replace(".csv", "_candidates.csv"), index=False)
     print(f"{len(races)} races, {len(cands)} candidate markets -> {a.out}")

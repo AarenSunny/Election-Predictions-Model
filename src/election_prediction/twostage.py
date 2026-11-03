@@ -119,10 +119,29 @@ def _probabilities(train_pred, train_y, sigma, test_pred, dist_t_df: float) -> d
     }
 
 
+def chamber_sigma(errors: pd.DataFrame, shrink_k: float = 100.0, year_col: str = "year") -> dict:
+    """
+    Item 4: sigma per chamber. The national part (each year's average miss) is shared;
+    the race part is estimated per chamber and shrunk toward the all-races value
+    (weight shrink_k pseudo-races), since there are only ~30 Senate races a year.
+    errors needs columns: error, chamber, year. Returns {chamber: sigma_total}.
+    """
+    from .probability import sigma_components
+    sig = sigma_components(errors, year_col=year_col)
+    within = errors["error"] - errors.groupby(year_col)["error"].transform("mean")
+    out = {}
+    for ch, w in within.groupby(errors["chamber"]):
+        n = len(w)
+        race_var = (n * float(w.var(ddof=1)) + shrink_k * sig["sigma_race"] ** 2) / (n + shrink_k)
+        out[ch] = float(np.sqrt(sig["sigma_national"] ** 2 + race_var))
+    return out
+
+
 def nested_two_stage(table: pd.DataFrame, baseline_features: list[str],
                      residual_fp: ResidualFitPredict = no_residual,
                      fold_features: FoldFeatures | None = poll_gap_features,
-                     t_df: float = 5, year_col: str = "year") -> pd.DataFrame:
+                     t_df: float = 5, year_col: str = "year",
+                     sigma_by_chamber: bool = False) -> pd.DataFrame:
     """
     Held-out predictions for every row (see module docstring). Returns the input
     rows plus:
@@ -161,10 +180,14 @@ def nested_two_stage(table: pd.DataFrame, baseline_features: list[str],
         test["sigma_national"] = sig["sigma_national"]
         test["sigma_race"] = sig["sigma_race"]
         test["sigma"] = sig["sigma_total"]
+        if sigma_by_chamber and "chamber" in train:
+            by = chamber_sigma(train.assign(error=train["margin"] - train["pred_margin"]),
+                               year_col=year_col)
+            test["sigma"] = test["chamber"].map(by).fillna(sig["sigma_total"])
 
         # 6: probabilities, calibrated on training years only
         probs = _probabilities(train["pred_margin"], (train["margin"] > 0).astype(int),
-                               sig["sigma_total"], test["pred_margin"], t_df)
+                               test["sigma"].to_numpy(), test["pred_margin"], t_df)
         for k, v in probs.items():
             test[f"p_{k}"] = v
         out.append(test)

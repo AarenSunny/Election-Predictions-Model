@@ -25,12 +25,84 @@ from .config import load_config
 
 
 def fit_residual_model(train: pd.DataFrame, features: list[str], params: dict):
-    """LightGBM regressor on the 'residual' column. Return a fitted model."""
-    raise NotImplementedError("residual model not built yet")
+    """
+    Stage 2: gradient-boosted trees on the 'residual' column (actual - baseline).
+
+    Uses LightGBM if installed, else scikit-learn's HistGradientBoostingRegressor (same
+    idea; both handle blank values natively). The number of trees is chosen by early
+    stopping on the LATEST TRAINING YEAR only (twostage.last_training_year_split), then
+    the model is refit on all training rows with that many trees, so the test year is
+    never used for any choice.
+    """
+    from .twostage import last_training_year_split
+
+    # learn only from races that actually have data (e.g. no ACS before 2016); races with
+    # every data feature blank get a correction of 0 in predict_residual
+    train = train[_has_data(train, features)]
+    X, y = train[features].astype(float), train["residual"].astype(float)
+    max_trees = int(params.get("n_estimators", 2000))
+    patience = int(params.get("early_stopping_rounds", 100))
+    fit_rows, val_rows = last_training_year_split(train)
+
+    def make(n):
+        from sklearn.ensemble import HistGradientBoostingRegressor
+        return HistGradientBoostingRegressor(
+            learning_rate=float(params.get("learning_rate", 0.03)),
+            max_leaf_nodes=int(params.get("num_leaves", 15)),
+            min_samples_leaf=int(params.get("min_data_in_leaf", 50)),
+            l2_regularization=float(params.get("l2_regularization", 1.0)),
+            max_features=float(params.get("feature_fraction", 0.8)),
+            max_iter=n, early_stopping=False,
+            random_state=int(params.get("random_state", 42)))
+
+    best = max_trees
+    if len(val_rows) and len(fit_rows):
+        m = make(max_trees).fit(fit_rows[features].astype(float), fit_rows["residual"])
+        errs = [float(np.mean((val_rows["residual"].to_numpy() - pr) ** 2))
+                for pr in m.staged_predict(val_rows[features].astype(float))]
+        best = int(np.argmin(errs)) + 1
+        # stop where the improvement stalled (patience) to avoid chasing noise
+        for i in range(len(errs)):
+            if i - int(np.argmin(errs[: i + 1])) >= patience:
+                best = int(np.argmin(errs[: i + 1])) + 1
+                break
+    model = make(max(best, 1)).fit(X, y)
+    model.n_trees_chosen_ = best
+    return model
+
+
+def _has_data(df: pd.DataFrame, features: list[str]) -> pd.Series:
+    data_cols = [f for f in features if f != "chamber_senate"]
+    return df[data_cols].notna().any(axis=1) if data_cols else pd.Series(True, index=df.index)
 
 
 def predict_residual(model, df: pd.DataFrame, features: list[str]):
-    raise NotImplementedError("residual model not built yet")
+    """Correction per race; 0 where every data feature is blank."""
+    out = np.zeros(len(df))
+    has = _has_data(df, features).to_numpy()
+    if has.any():
+        out[has] = model.predict(df.loc[has, features].astype(float))
+    return out
+
+
+def add_residual_features(table: pd.DataFrame, cfg: dict) -> pd.DataFrame:
+    """Join the residual feature files listed under data.residual_features (ACS:
+    scripts/build_acs_features.py; candidates: scripts/build_candidate_features.py) by race
+    keys; races without a row get blanks. Adds chamber_senate."""
+    from .config import repo_path
+    from .data import KEYS, standardize_keys
+
+    out = table.copy()
+    out["chamber_senate"] = (out["chamber"] == "Senate").astype(int)
+    paths = cfg.get("data", {}).get("residual_features") or []
+    for path in ([paths] if isinstance(paths, str) else paths):
+        if not repo_path(path).exists():
+            continue
+        f = standardize_keys(pd.read_csv(repo_path(path)))
+        f["year"] = f["year"].astype(int)
+        cols = [c for c in f.columns if c not in KEYS and c not in out]
+        out = out.merge(f[KEYS + cols], on=KEYS, how="left", validate="many_to_one")
+    return out
 
 
 def load_baseline_inputs(cfg: dict):
@@ -69,6 +141,7 @@ def build_training_table(cfg: dict, approval_source: str | None = None, verbose:
     national, incumbency = inputs if inputs is not None else load_baseline_inputs(cfg)
     source = approval_source or base.get("approval_source", "reliable_30d")
     table = add_baseline_inputs(table, national, incumbency, source)
+    table = add_residual_features(table, cfg)
     if verbose:
         miss = table["incumbency_signed"].isna()
         national_ok = table[["generic_ballot", "pres_flag", "midterm_flag", "approval"]].notna().all().all()
