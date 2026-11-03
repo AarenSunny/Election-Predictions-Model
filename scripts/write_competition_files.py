@@ -35,8 +35,15 @@ def template_id(r) -> str:
     return f"{r['state']}-" + ("AL" if d == 0 else f"{d:02d}")
 
 
+# names truncated in the team's incumbency file (first letter lost)
+NAME_FIXES = {"assamin Ansari": "Yassamin Ansari", "olanda Prince": "Yolanda Prince"}
+
+
 def clean(name) -> str:
-    return re.sub(r"\s+", " ", re.sub(r"[^\w .,'\-]", "", str(name))).strip() if isinstance(name, str) else ""
+    if not isinstance(name, str):
+        return ""
+    n = re.sub(r"\s+", " ", re.sub(r"[^\w .,'\-]", "", name)).strip()
+    return NAME_FIXES.get(n, n)
 
 
 def incumbents_2026(incumbency_xlsx: Path) -> dict:
