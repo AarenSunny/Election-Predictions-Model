@@ -4,9 +4,11 @@ Date: 2026-11-02. This covers everything changed to plug the team's final baseli
 (Cook House + Senate PVI, generic ballot, midterm flag, president flag, presidential
 approval, incumbency) into the stage-1 baseline.
 
-**Short version.** All six inputs are loaded, cleaned and built. The config still trains
-on `lean` only, as asked, and keeps your 2010–2024 training years. A new command scores every combination of inputs and every
-approval series on held-out years, so you can decide what to add:
+**Short version.** All six inputs are loaded, cleaned and built, with 2010–2024 as the
+training years. The baseline uses **lean + generic_ballot + incumbency_signed +
+midterm_x_pres** (set in `configs/baseline.yaml` after the comparison below; when this
+file was first written it was still lean only). A command scores every combination of
+inputs and every approval series on held-out years:
 
 ```bash
 PYTHONPATH=src python3 -m election_prediction.compare --config configs/baseline.yaml   # compare inputs
@@ -216,9 +218,73 @@ wins consistently, so the differences are noise.
 
 ## 7. Not done (on purpose)
 
-- `baseline.features` is still `[lean]`. Add inputs yourself after reading section 5.
+- (Done since: `baseline.features` is now `[lean, generic_ballot, incumbency_signed,
+  midterm_x_pres]`, and `incumbency_signed` was removed from `residual_model.features`.)
 - The residual model is still a skeleton.
 - Nothing builds 2026 prediction rows yet (the national row and incumbency for 2026 are
   loaded and ready; OH/FL specials included).
 - The old `incumbency_1998_2026.csv` (my build from 538 + congress-legislators) is kept only
   as a cross-check.
+
+---
+
+## 8. Two-stage evaluation and probability check (`twostage.py`)
+
+Added after review. Two fixes needed before the residual model can be built and trusted.
+
+**1. Residuals are rebuilt inside each test year.** `data/processed/baseline_residuals.csv`
+is out-of-fold, but each residual came from a baseline fit on all other years, so a residual
+model trained on it and tested on 2024 has indirectly seen 2024. That file is now for
+looking at misses only. `twostage.nested_two_stage` does, for each test year Y:
+
+1. inner residuals: for each training year Z, fit the baseline on the training years
+   minus Z and predict Z (Y never involved);
+2. fold-dependent features, e.g. `poll_gap = poll_margin − baseline`, built from those
+   inner baselines (training rows) and from step 3's baseline (test rows);
+3. baseline fit on all training years → prediction for Y;
+4. residual model fit on training rows only (target = inner residual) → correction for Y.
+   Feature selection and early stopping must live inside the residual model's fit, which
+   only ever receives training rows (`last_training_year_split` holds out the latest
+   training year for early stopping);
+5. sigma for Y from the combined held-out errors of the training years (Y's own errors
+   never set its sigma);
+6. P(D wins) three ways, each fitted on training years only: normal(sigma),
+   Student-t(sigma), logistic calibration on the predicted margin.
+
+Tests (`tests/test_twostage.py`) scramble one year's results and check that year's
+predictions, sigma and probabilities don't move; check the residual model never receives
+the test year; and check `poll_gap` uses the fold's own baseline.
+
+**3. Probabilities are checked on held-out years.** Run:
+
+```bash
+PYTHONPATH=src python3 -m election_prediction.twostage            # baseline only (reference)
+PYTHONPATH=src python3 -m election_prediction.twostage --residual linear   # harness test, once features exist
+PYTHONPATH=src python3 -m election_prediction.twostage --log      # also log to reports/experiments.csv
+```
+
+It prints margin errors (baseline vs combined), sigma per test year, log loss and Brier
+for each probability method, a calibration table and an upset check, and saves every
+held-out prediction to `data/processed/two_stage_oof.csv`.
+
+### Results today (baseline only, 2010–2024, 3,235 races)
+
+| | value |
+| --- | --- |
+| RMSE / winner accuracy | 0.0891 / 95.0% (2018+: 0.0753 / 95.3%), same as before, as it should be |
+| sigma per test year | 0.088–0.093 (national 0.024–0.037, race 0.081–0.087) |
+
+| Probability method | Log loss | Brier |
+| --- | --- | --- |
+| normal | 0.1303 | 0.0379 |
+| t (df 5, config) | 0.1303 | 0.0380 |
+| logistic | 0.1323 | 0.0388 |
+
+Normal and t are tied; logistic calibration is slightly worse. Calibration is good at the
+extremes (1,342 races predicted ≤ 5% D: 0.9% won; 1,168 predicted ≥ 95%: 99.5% won).
+In the middle, Democrats predicted 10–35% won more often than predicted (e.g. 20–35%
+bucket: predicted 26%, actual 33%, 76 races), and underdogs at 20–35% won 31% vs 26%
+predicted. With these sample sizes that's a mild lean, not yet a reason to change the
+method; recheck once the residual model is in.
+
+`train.py` still reports the baseline alone; its sigma line now says so.

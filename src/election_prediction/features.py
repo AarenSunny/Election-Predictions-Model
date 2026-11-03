@@ -303,7 +303,7 @@ def county_to_district(county_df: pd.DataFrame, crosswalk: pd.DataFrame, value_c
     m = crosswalk.merge(county_df[[county_col] + value_cols], on=county_col, how="left")
     rows = []
     for k, g in m.groupby(keys):
-        rec = dict(zip(keys, k if isinstance(k, tuple) else (k,), strict=False))
+        rec = dict(zip(keys, k if isinstance(k, tuple) else (k,)))  # noqa: B905 (Python 3.9)
         for c in value_cols:
             ok = g[c].notna()
             w = g.loc[ok, weight_col]
@@ -349,7 +349,7 @@ def poll_average(polls: pd.DataFrame, as_of, half_life_days: float = 12.0,
         return pd.DataFrame(columns=keys + POLL_COLUMNS)
     p["age"] = (as_of - p["end_date"]).dt.days
     rating = p["pollster_rating"].fillna(1.0) if "pollster_rating" in p else 1.0
-    internal = (p["internal"].fillna(False).astype(bool)
+    internal = (pd.Series(np.where(p["internal"].isna(), False, p["internal"]), index=p.index).astype(bool)
                 if "internal" in p else pd.Series(False, index=p.index))
     p["w"] = (0.5 ** (p["age"] / half_life_days) * np.sqrt(p["sample_size"].clip(lower=1))
               * rating * np.where(internal, internal_discount, 1.0))

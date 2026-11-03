@@ -141,7 +141,7 @@ def race_probabilities(cands: pd.DataFrame, method: str = "two_party",
         else:
             raise ValueError("method must be 'two_party' or 'all_candidates'")
         p = pD / denom if (denom and not np.isnan(pD)) else (0.0 if not np.isnan(pR) else np.nan)
-        rec = dict(zip(keys, k, strict=False))
+        rec = dict(zip(keys, k))  # noqa: B905 (Python 3.9)
         rec.update(p_market_D=p, price_D=pD, price_R=pR, price_sum=total,
                    n_candidates=len(g), no_D_market=bool(np.isnan(pD)),
                    no_R_market=bool(np.isnan(pR)),

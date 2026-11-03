@@ -8,6 +8,8 @@ Pipeline (run with `python -m election_prediction.train --config configs/baselin
                                                                                 picks its inputs)
     4. stage-2 LightGBM on residuals         fit_residual_model below          [TODO model]
     5. margins -> probabilities              probability.sigma_components / prob_from_margin
+    Steps 3-5 are evaluated together, leak-free, by twostage.py (residuals and sigma rebuilt
+    inside each test year). This file's run() reports the baseline alone.
     6. score + benchmark                     evaluate.*, benchmarks.backtest
     7. log the run                           evaluate.log_experiment -> reports/experiments.csv
 """
@@ -108,7 +110,8 @@ def run(cfg: dict) -> pd.DataFrame:
     print(f"winner accuracy {overall['winner_accuracy']:.3f}")
     print("\nerrors by year:")
     print(errors_by_year(out, pred_col="baseline").round(4).to_string(index=False))
-    print(f"\nsigma_national {sig['sigma_national']:.4f}  sigma_race {sig['sigma_race']:.4f}")
+    print(f"\nsigma_national {sig['sigma_national']:.4f}  sigma_race {sig['sigma_race']:.4f}"
+          "  (baseline alone; for probabilities use `python -m election_prediction.twostage`)")
     print("\n20 biggest misses:")
     cols = ["race_id", "dem_name", "rep_name", "lean", "margin", "baseline", "residual"]
     top = out.reindex(out["residual"].abs().sort_values(ascending=False).index).head(20)

@@ -21,7 +21,8 @@ data:
   incumbency: data/raw/incumbency/congressional_incumbency_1998_2026.xlsx
   cook_house: data/raw/cook/Cook_PVI_1997-2026.xlsx       # inputs to scripts/convert_cook_pvi.py
   cook_senate: data/raw/cook/COOK_SENATE_PVI.xlsx
-  baseline_residuals: data/processed/baseline_residuals.csv
+  baseline_residuals: data/processed/baseline_residuals.csv   # for looking at misses ONLY: stage 2 is
+                                     # trained on residuals rebuilt inside each test year (twostage.py)
   house_results: data/raw/mit_house_1976_2024.csv     # MIT Election Lab, candidate-level
   senate_results: data/raw/mit_senate_1976_2024.csv
   candidates: data/raw/candidates.csv                  # incumbency, scandal, cfscore
