@@ -19,8 +19,8 @@ We built the forecast in five steps.
    on the same scale as the vote margin: lean = PVI × 2 / 100, with Democrats positive.
 
 2. Predicted margin. A linear regression predicts the two-party margin, (D − R) / (D + R),
-   from four inputs. We trained it on all 3,235 contested regular House and Senate races from
-   2010 to 2024.
+   from four inputs. We trained it on 3,235 contested regular House and Senate races from
+   2010 to 2024 (exclusions are listed under Data).
 
    | Input | What it is | Coefficient |
    | --- | --- | --- |
@@ -68,9 +68,9 @@ picked wins.
 We also built a second-stage model to predict where the baseline misses, using Census ACS
 demographics, FEC fundraising and each incumbent's past overperformance. The code is
 `train.fit_residual_model`, and `twostage.py` tests it with fully nested leave-one-year-out
-validation (residuals are rebuilt inside each test year so nothing leaks). It helped the
-older years but not 2018 to 2024. Historical FEC totals also include money raised after
-Election Day, which quietly leaks the result. So it's switched off
+validation (residuals are rebuilt inside each test year so nothing leaks). On 2018 to 2024
+it barely moved the results, and even that small gain probably came from a leak:
+historical FEC totals include money raised after Election Day. So it's switched off
 (`residual_model.use: false`). There's more in `docs/CHANGES_2026-11-02.md`.
 
 ## Data
